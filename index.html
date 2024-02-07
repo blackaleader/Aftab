@@ -3,28 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Khiar</title>
+    <title>Custom Play Video Prompt</title>
     <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
+        #messageBox {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            background-color: white;
+            color: black;
+            border: 1px solid #ddd;
+            z-index: 1001; /* Ensure it appears above other content */
+            display: none; /* Hidden by default */
         }
-        .video-container {
-            text-align: center;
+        #overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000; /* Ensure it appears just below the message box */
+            display: none; /* Hidden by default */
         }
     </style>
 </head>
 <body>
-    <div class="video-container">
-        <h1>Aftab labe boome!</h1>
-        <video id="musicVideo" width="560" height="315" autoplay controls>
-            <source src="aftab.webm" type="video/webm">
-            <!-- You can add additional source tags for different video formats -->
-            Your browser does not support the video tag.
-        </video>
-    </div>
+
+<div id="overlay"></div>
+<div id="messageBox">
+    <p>این ویدیوبرای افراد زیر 35 سال توضیه نمی شود</p>
+    <button id="playButton">Play</button>
+</div>
+
+<video id="myVideo" width="640" height="360" muted loop controls>
+    <source src="aftab.webm" type="video/webm">
+    Your browser does not support the video tag.
+</video>
+
+<script>
+    // Function to show the message box
+    function showMessage() {
+        document.getElementById('messageBox').style.display = 'block';
+        document.getElementById('overlay').style.display = 'block';
+    }
+
+    // Function to play the video and hide the message box
+    function playVideo() {
+        var video = document.getElementById('myVideo');
+        video.muted = false;
+        video.play().catch(error => {
+            console.error("Error attempting to play video:", error);
+        });
+        document.getElementById('messageBox').style.display = 'none';
+        document.getElementById('overlay').style.display = 'none';
+    }
+
+    // Event listener for the play button
+    document.getElementById('playButton').addEventListener('click', playVideo);
+
+    // Show the message box when the webpage loads
+    window.onload = showMessage;
+</script>
+
 </body>
 </html>
